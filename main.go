@@ -14,21 +14,20 @@ import (
 	"github.com/golang/glog"
 )
 
-const (
-	rootDir = "/home/paul/tmp/itunes/music"
-	tag     = ".dupe"
-)
+const tag = ".dupe"
+
+var rootDir = flag.String("root_dir", "", "Root directory under which to scan for file duplicates.")
 
 type rename struct{ from, to string }
 
 func main() {
 	flag.Parse()
 
-	fmt.Printf("Finding file dupes in %s\n", rootDir)
+	fmt.Printf("Finding file dupes in %q\n", *rootDir)
 
 	var toRename []rename
 
-	err := filepath.Walk(rootDir, func(path string, info os.FileInfo, err error) error {
+	err := filepath.Walk(*rootDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
